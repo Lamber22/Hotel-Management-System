@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='admin_dashboard.css') }}">
+</head>
+<body>
+    <header>
+        <img  src="{{url_for('static',filename='images/harmony.JPG')}}" alt="harmony Heights Logo">
+        <h1>Harmony Heights</h1>
+    </header>
+    <main>
+        <aside>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('login.admin_dashboard') }} ">Dashboard</a></li>
+                    <li class="dropdown">
+                        <button class="dropbtn">Management</button>
+                        <div class="dropdown-content">
+                            <a href="/manage_staffs">Manage Staffs</a>
+                            <a href="/manage_rooms">Manage Rooms</a>
+                    </div>
+                    </li>
+                    <li><a href="{{ url_for('login.admin_logout') }}">Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        
+        
+        <section>
+            <ul class="dashboard-menu">
+                <div><a href="#" class="reservation">Reservation</a></div>
+                <div><a href="#" class="check-in">Check In</a></div>
+                <div><a href="#" class="check-out">Check Out</a></div>
+                <li class="no-link">Occupied: 10</li>
+                <li class="no-link">Vacant: 12</li>
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Harmony Heights Hotel System</p>
+    </footer>
+</body>
+</html>
