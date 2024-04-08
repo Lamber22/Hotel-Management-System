@@ -1,4 +1,4 @@
-from database import db
+"""from database import db
 
 
 class Room(db.Model):
@@ -9,6 +9,19 @@ class Room(db.Model):
     room_type = db.Column(db.String(50), nullable=False)
     price_per_night = db.Column(db.Float, nullable=False)
     is_available = db.Column(db.Boolean, default=True)
-    available_date = db.Column(db.Date, nullable=False)
+    available_date = db.Column(db.Date)
+    reservations = db.relationship("Reservation", back_populates="room")
 
-    reservation = db.relationship("Reservation", back_populates="room", uselist=False)
+    @classmethod
+    def insert_rooms(cls):
+        rooms_data = [
+            {'room_number': '101', 'room_type': 'Single', 'price_per_night': 50.0},
+            {'room_number': '102', 'room_type': 'Double', 'price_per_night': 80.0},
+            {'room_number': '103', 'room_type': 'Suite', 'price_per_night': 120.0}
+        ]
+
+        for room_info in rooms_data:
+            room = cls(**room_info)
+            db.session.add(room)
+
+        db.session.commit()"""
