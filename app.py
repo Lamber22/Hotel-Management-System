@@ -16,7 +16,7 @@ db.init_app(app)
 
 app.register_blueprint(Blueprints.Reservations.reservation_blueprint)
 app.register_blueprint(Blueprints.Admin.admin_blueprint)
-app.register_blueprint(Blueprints.Rooms.room_blueprint)
+#app.register_blueprint(Blueprints.Rooms.room_blueprint)
 
 
 @app.route('/')
