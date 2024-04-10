@@ -181,7 +181,34 @@ body {
     display: flex;
     justify-content: center;
 }
+#sidebar .side-menu li a .bx {
+    min-width: calc(60px - ((4px + 6px) * 2));
+    display: flex;
+    justify-content: center;
+}
 
+#sidebar .side-menu-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 16px;
+    border-top: 1px solid var(--grey);
+}
+
+#sidebar .side-menu-bottom li.logout a {
+    color: var(--red);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+#sidebar .side-menu li.logout a .bx {
+    font-size: 24px;
+}
 
 #content {
     position: relative;
