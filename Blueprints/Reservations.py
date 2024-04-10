@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import blueprints, request, redirect, session, render_template
+from flask import blueprints, request, redirect, jsonify, session, render_template
 from database import db
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
@@ -26,7 +26,6 @@ class Reservation(db.Model):
     def make_reservation():
         try:
             data = request.form
-            print("Form data:", data)
             required_fields = ['first_name', 'last_name', 'email', 'phone', 'check_in_date', 'check_out_date', 'room_number']
             if not all(field in data for field in required_fields):
                 return jsonify({"message": "Incomplete form data"}), 400
@@ -58,27 +57,39 @@ class Reservation(db.Model):
             db.session.add(reservation)
             db.session.commit()
 
-            return render_template('admin_dashboard.html')
+            return render_template('admin_dashboard.html',
+                               guest_name=guest_name,
+                               email=email,
+                               phone=phone,
+                               check_in_date=check_in_date.strftime('%Y-%m-%d'),
+                               check_out_date=check_out_date.strftime('%Y-%m-%d'),
+                               room_number=room_number)
 
         except Exception as e:
             print(e)
             logging.error(f"Error occurred during reservation creation: {str(e)}")
             return jsonify({"message": "An error occurred while processing your request"}), 500
 
-
-    @reservation_blueprint.route('/', methods=['GET'])
+    @reservation_blueprint.route('/api/reservations', methods=['GET'])
     def get_reservations_api():
-        reservations = Reservation.query.all()
-        reservation_list = [{
-            'guest_name': reservation.guest_name,
-            'email': reservation.email,
-            'phone': reservation.phone,
-            'check_in_date': reservation.check_in_date.strftime('%Y-%m-%d'),
-            'check_out_date': reservation.check_out_date.strftime('%Y-%m-%d'),
-            'room_number': reservation.room_number
-        } for reservation in reservations]
-        return jsonify(reservation_list), 200
+        try:
+            reservations = Reservation.query.all()
+            reservations_data = []
+            for reservation in reservations:
+                reservations_data.append({
+                    "guest_name": reservation.guest_name,
+                    "email": reservation.email,
+                    "phone": reservation.phone,
+                    "checkin_date": reservation.check_in_date.strftime('%Y-%m-%d'),
+                    "checkout_date": reservation.check_out_date.strftime('%Y-%m-%d'),
+                    "room_number": reservation.room_number,
+                })
+            return jsonify(reservations_data)
 
+        except Exception as e:
+            print(e)
+            logging.error(f"Error occurred while fetching reservations: {str(e)}")
+            return jsonify({"message": "An error occurred while processing your request"}), 500
 
     @reservation_blueprint.route('/<int:id>', methods=['DELETE'])
     def cancel_reservation(id):
@@ -93,3 +104,20 @@ class Reservation(db.Model):
         db.session.delete(reservation)
         db.session.commit()
         return jsonify({"message": "Reservation cancelled successfully"}), 204
+
+
+    @reservation_blueprint.route('/check_in')
+    def reservation_checkin():
+        try:
+            reservations = Reservation.query.all()
+            return render_template('check_in.html', reservations=reservations)
+
+        except Exception as e:
+            print(e)
+            logging.error(f"Error occurred while fetching reservations: {str(e)}")
+            return jsonify({"message": "An error occurred while processing your request"}), 500
+
+
+    @reservation_blueprint.route('/check_out')
+    def reservation_checkout():
+        return render_template('check_out.html')

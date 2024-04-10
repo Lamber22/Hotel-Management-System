@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Boxicons -->
+    <link
+      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <!-- My CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='check_out.css') }}"
+    />
+
+    <title>Admin Dashboard</title>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+      <a href="#" class="brand">
+        <img
+          class="logo"
+          src="{{ url_for('static', filename='images/harmony-logo.JPG') }}"
+          alt="Harmony Heights Hotel Logo"
+        />
+      </a>
+      <ul class="side-menu top">
+        <li class="active">
+          <a href="{{ url_for('login.admin_dashboard') }}">
+            <i class="bx bxs-dashboard"></i>
+            <span class="text">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="bx bxs-doughnut-chart"></i>
+            <span class="text">Make Reservation</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="bx bxs-shopping-bag-alt"></i>
+            <span class="text">View Reservations</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="bx bxs-group"></i>
+            <span class="text">Staff Management</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="side-menu">
+        <li>
+          <a href="{{ url_for('login.admin_logout') }}">
+            <i class="bx bxs-log-out-circle"></i>
+            <span class="text">Logout</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+    <section id="content">
+      <!-- NAVBAR -->
+      <nav></nav>
+      <!-- NAVBAR -->
+
+      <!-- MAIN -->
+      <main>
+        <div class="head-title">
+          <div class="left">
+            <h1>Dashboard</h1>
+            <ul class="head_title">
+              <li>
+                <a href="#">Admin Dashboard</a>
+              </li>
+              <li><i class="bx bx-chevron-right"></i></li>
+              <li>
+                <a class="active" href="{{ url_for('login.admin_dashboard') }}">Home</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <ul class="menu">
+          <li>
+            <a class='reservation_button' href="{{ url_for('login.admin_dashboard') }}">Reservation</a>
+          </li>
+          <li>
+            <a href="{{ url_for('reservations.reservation_checkin') }}">Check In</a>
+          </li>
+          <li>
+            <a class='check_out_button' href="{{ url_for('reservations.reservation_checkout') }}">Check Out</a>
+          </li>
+          <li class="no-link">Occupied:</li>
+          <li class="no-link">Vacant:</li>
+        </ul>
+
+        <div class="guest-data">
+          <div class="guest_info">
+            <div class="head">
+              <h3>Guests in the Hotel</h3>
+              <i class="bx bx-search"></i>
+            </div>
+            <table id="guestTable">
+              <thead>
+                <tr>
+                  <th>Guest Name</th>
+                  <th>Check-in Date</th>
+                  <th>Check-out Date</th>
+                  <th>Room No.</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for reservation in reservations %}
+                <tr>
+                  <td>{{ reservation.guest_name }}</td>
+                  <td>{{ reservation.check_in_date.strftime('%m-%d-%Y') }}</td>
+                  <td>{{ reservation.check_out_date.strftime('%m-%d-%Y') }}</td>
+                  <td>{{ reservation.room_number }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+        <div class="add_guest">
+          <form action="/api/v1/reservations" method="post">
+            <h1>Make Reservation</h1>
+            <label for="first_name">First Name:</label>
+            <input
+              type="text"
+              id="first_name"
+              name="first_name"
+              required
+            /><br />
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" required /><br />
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required /><br />
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" required /><br />
+            <label for="check_in_date">Check-in Date:</label>
+            <input
+              type="date"
+              id="check_in_date"
+              name="check_in_date"
+              required
+            /><br />
+            <label for="check_out_date">Check-out Date:</label><br />
+            <input
+              type="date"
+              id="check_out_date"
+              name="check_out_date"
+              required
+            /><br />
+            <label for="room_number">Room Number:</label>
+            <input
+              type="text"
+              id="room_number"
+              name="room_number"
+              required
+            /><br />
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </main>
+    </section>
+
+<script>
+  function fetchReservations() {
+    fetch('/api/v1/reservations/api/reservations')
+      .then((response) => response.json())
+      .then((data) => {
+        const table = document.getElementById('guestTable');
+        const tbody = table.querySelector('tbody');
+        tbody.innerHTML = '';
+
+        data.forEach((reservation) => {
+          const row = tbody.insertRow();
+
+          const nameCell = row.insertCell();
+          nameCell.textContent = reservation.guest_name;
+
+          const checkInCell = row.insertCell();
+          checkInCell.textContent = reservation.checkin_date;
+
+          const checkOutCell = row.insertCell();
+          checkOutCell.textContent = reservation.checkout_date;
+
+          const roomCell = row.insertCell();
+          roomCell.textContent = reservation.room_number;
+
+          const statusCell = row.insertCell();
+          const statusText = document.createTextNode('');
+          statusCell.appendChild(statusText);
+
+          const checkOutDate = new Date(reservation.checkout_date);
+          const now = new Date();
+
+          if (now < checkOutDate) {
+            statusCell.style.backgroundColor = 'green';
+            statusCell.style.fontWeight = 'bold';
+            statusText.nodeValue = 'Active';
+          } else {
+            statusCell.style.backgroundColor = 'red';
+            statusCell.style.fontWeight = 'bold';
+            statusText.nodeValue = 'Checked Out';
+          }
+        });
+      });
+  }
+
+  fetchReservations();
+  setInterval(fetchReservations, 5000); // Update every 5 seconds
+</script>
+  </body>
+</html>
