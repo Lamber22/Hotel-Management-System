@@ -168,9 +168,6 @@ body {
 	transition: width .3s ease;
 }
 
-#sidebar .side-menu li a.logout {
-	color: var(--red);
-}
 
 #sidebar .side-menu.top li a:hover {
 	color: var(--blue);
@@ -181,7 +178,24 @@ body {
 	display: flex;
 	justify-content: center;
 }
+#sidebar .side-menu-bottom {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	padding: 16px;
+	border-top: 1px solid var(--grey);
 
+}
+#sidebar .side-menu-bottom li{
+	width: 120px;
+	align-content: center;
+	font-size: 15px;
+}
+#sidebar .side-menu-bottom li a {
+	color: var(--red);
+	font-size: 20px;
+	font-weight: 100;
+}
 
 #content {
 	position: relative;
@@ -279,7 +293,16 @@ body {
 
 #content main .menu li a {
 	display: block;
+	font-weight: bold;
+	font-size:large;
 	color: var(--dark);
+}
+
+#content main .menu li:has(> a.reservation_button) {
+	background-color: #115da8;
+}
+#content main .menu li:has(> a.reservation_button) a {
+	color: var(--light);
 }
 
 ul.menu li a.active {
@@ -334,12 +357,13 @@ ul.menu li a.active {
 #content main .guest-data .guest_info table th {
 	padding-bottom: 12px;
 	font-size: 18px;
-	text-align: left;
+	text-align: center;
 	border-bottom: 1px solid var(--grey);
 }
 
 #content main .guest-data .guest_info table td {
 	padding: 16px 0;
+	text-align: center;
 }
 
 #content main .guest-data .guest_info table tr td:first-child {
@@ -402,6 +426,7 @@ ul.menu li a.active {
 	border-bottom: solid var(--blue);
 	border-radius: 5;
 }
+
 #content main .guest-data .add_guest form button[type="submit"]:hover {
 	border-color: var(--blue);
 }
