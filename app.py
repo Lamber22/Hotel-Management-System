@@ -4,8 +4,10 @@ from dotenv import load_dotenv
 import os
 from flask import jsonify
 from database import db
+from Models.room import room_blueprint, Room
 import Blueprints
 from datetime import datetime
+
 
 app = Flask(__name__)
 CORS(app)
@@ -16,7 +18,7 @@ db.init_app(app)
 
 app.register_blueprint(Blueprints.Reservations.reservation_blueprint)
 app.register_blueprint(Blueprints.Admin.admin_blueprint)
-#app.register_blueprint(Blueprints.Rooms.room_blueprint)
+app.register_blueprint(room_blueprint)
 
 
 @app.route('/')
@@ -35,12 +37,23 @@ def not_found(error):
 
 @app.route('/logout')
 def logout():
-    # Remove 'admin_logged_in' from session if exists
     session.pop('admin_logged_in', None)
     return redirect(url_for('admin.admin_login'))
 
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+            db.create_all()
+
+            Room.create_room(101, 'Single', '50')
+            Room.create_room(102, 'Double', '70')
+            Room.create_room(103, 'Suite', '100')
+            Room.create_room(104, 'Deluxe', '120')
+            Room.create_room(105, 'Penthouse', '200')
+            Room.create_room(106, 'Penthouse', '200')
+            Room.create_room(107, 'Penthouse', '200')
+            Room.create_room(108, 'Penthouse', '200')
+            Room.create_room(109, 'Penthouse', '200')
+            Room.create_room(110, 'Penthouse', '200')
+
+            app.run(debug=True)

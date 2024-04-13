@@ -168,19 +168,11 @@ body {
     transition: width .3s ease;
 }
 
-#sidebar .side-menu li a.logout {
-    color: var(--red);
-}
 
 #sidebar .side-menu.top li a:hover {
     color: var(--blue);
 }
 
-#sidebar .side-menu li a .bx {
-    min-width: calc(60px - ((4px + 6px) * 2));
-    display: flex;
-    justify-content: center;
-}
 #sidebar .side-menu li a .bx {
     min-width: calc(60px - ((4px + 6px) * 2));
     display: flex;
@@ -193,6 +185,7 @@ body {
     width: 100%;
     padding: 16px;
     border-top: 1px solid var(--grey);
+
 }
 
 #sidebar .side-menu-bottom li {
@@ -206,6 +199,7 @@ body {
     font-size: 20px;
     font-weight: 100;
 }
+
 #content {
     position: relative;
     width: calc(100% - 280px);
@@ -307,11 +301,11 @@ body {
     color: var(--dark);
 }
 
-#content main .menu li:has(> a.check_out_button) {
+#content main .menu li:has(> a.reservation_button) {
     background-color: #115da8;
 }
 
-#content main .menu li:has(> a.check_out_button) a {
+#content main .menu li:has(> a.reservation_button) a {
     color: var(--light);
 }
 

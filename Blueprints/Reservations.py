@@ -4,7 +4,8 @@ from database import db
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 import logging
-#from Models.room import Room
+from Models.room import Room
+
 
 reservation_blueprint = blueprints.Blueprint('reservations', __name__, url_prefix='/api/v1/reservations')
 
@@ -18,8 +19,22 @@ class Reservation(db.Model):
     check_in_date = db.Column(db.Date, nullable=False)
     check_out_date = db.Column(db.Date, nullable=False)
     room_number = db.Column(db.Integer, nullable=False)
+    room_id = db.Column(db.Integer, db.ForeignKey('Rooms.id'), nullable=False)
+    room = db.relationship('Room', backref=db.backref('reservations', lazy=True))
 
 
+    @staticmethod
+    def is_room_available(room_number, check_in_date, check_out_date):
+        reservations = Reservation.query.filter(
+            Reservation.room_number == room_number,
+            Reservation.check_in_date <= check_out_date,
+            Reservation.check_out_date >= check_in_date
+        ).all()
+
+        if reservations:
+            return False
+        else:
+            return True
 
 
     @reservation_blueprint.route('/', methods=['POST'])
@@ -42,8 +57,15 @@ class Reservation(db.Model):
 
             try:
                 room_number = int(data['room_number'])
+                room = Room.query.filter_by(room_number=room_number).first()
+                if not room:
+                    return jsonify({"message": "Room not found"}), 404
+
             except ValueError:
-                return jsonify({"message": "Invalid room number"}), 400
+                return jsonify({"message": "Room number Must be a integer"}), 400
+
+            if not Reservation.is_room_available(room_number, check_in_date, check_out_date):
+                return jsonify({"message": "Room not available for the specified dates"}), 400
 
             reservation = Reservation(
                 guest_name=guest_name,
@@ -51,10 +73,15 @@ class Reservation(db.Model):
                 phone=phone,
                 check_in_date=check_in_date,
                 check_out_date=check_out_date,
-                room_number=room_number
+                room_number=room_number,
+                room_id=room.id
             )
 
             db.session.add(reservation)
+            db.session.commit()
+
+            room = Reservation.query.filter_by(room_number=room_number).first().room
+            room.is_available = False
             db.session.commit()
 
             return render_template('admin_dashboard.html',
