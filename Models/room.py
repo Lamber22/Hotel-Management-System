@@ -15,11 +15,9 @@ class Room(db.Model):
     is_available = db.Column(db.Boolean, default=True)
     available_date = db.Column(db.DateTime, nullable=False)
 
-
     @room_blueprint.route('/room_management', methods=['GET'])
-    def room_management():
+    def room_management(self):
         return render_template('room.html')
-
 
     def create_room(room_number, room_type, room_price):
         room = Room.query.filter_by(room_number=room_number).first()
@@ -45,15 +43,14 @@ class Room(db.Model):
             reservations = room.reservations
             for reservation in reservations:
                 if (check_in_date <= reservation.check_out_date and
-                    check_out_date >= reservation.check_in_date):
+                        check_out_date >= reservation.check_in_date):
                     return False
                 return True
         else:
             return True
 
-
     @room_blueprint.route('/count', methods=['GET'])
-    def room_count():
+    def room_count(self):
         is_available = request.args.get('is_available')
         if is_available == 'true':
             count = Room.query.filter_by(is_available=True).count()
@@ -63,9 +60,8 @@ class Room(db.Model):
             count = Room.query.count()
         return jsonify({'count': count})
 
-
     @room_blueprint.route('/room-list', methods=['GET'])
-    def get_rooms():
+    def get_rooms(self):
         rooms = Room.query.all()
         room_list = [{
             'id': room.id,

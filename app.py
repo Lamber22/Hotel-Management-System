@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, make_response
+from flask import Flask, render_template, url_for, session, redirect, make_response
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
@@ -43,17 +43,17 @@ def logout():
 
 if __name__ == '__main__':
     with app.app_context():
-            db.create_all()
+        db.create_all()
 
-            Room.create_room(101, 'Single', '50')
-            Room.create_room(102, 'Double', '70')
-            Room.create_room(103, 'Suite', '100')
-            Room.create_room(104, 'Deluxe', '120')
-            Room.create_room(105, 'Penthouse', '200')
-            Room.create_room(106, 'Penthouse', '200')
-            Room.create_room(107, 'Penthouse', '200')
-            Room.create_room(108, 'Penthouse', '200')
-            Room.create_room(109, 'Penthouse', '200')
-            Room.create_room(110, 'Penthouse', '200')
+        # Room.create_room(101, 'Single', '50')
+        # Room.create_room(102, 'Double', '70')
+        # Room.create_room(103, 'Suite', '100')
+        # Room.create_room(104, 'Deluxe', '120')
+        # Room.create_room(105, 'Penthouse', '200')
+        # Room.create_room(106, 'Penthouse', '200')
+        # Room.create_room(107, 'Penthouse', '200')
+        # Room.create_room(108, 'Penthouse', '200')
+        # Room.create_room(109, 'Penthouse', '200')
+        # Room.create_room(110, 'Penthouse', '200')
 
-            app.run(debug=True)
+    app.run(debug=True)
