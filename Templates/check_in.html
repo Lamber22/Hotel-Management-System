@@ -42,15 +42,27 @@
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="{{ url_for('reservations.view_reservation') }}">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">View Reservations</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('rooms.room_management') }}">
+            <i class="bx bxs-group"></i>
+            <span class="text">Room Management</span>
           </a>
         </li>
         <li>
           <a href="#">
             <i class="bx bxs-group"></i>
             <span class="text">Staff Management</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('billing.view_bills') }}">
+            <i class="bx bxs-group"></i>
+            <span class="text">Billing</span>
           </a>
         </li>
       </ul>
@@ -124,47 +136,6 @@
               </tbody>
             </table>
           </div>
-
-        <div class="add_guest">
-          <form action="/api/v1/reservations" method="post">
-            <h1>Make Reservation</h1>
-            <label for="first_name">First Name:</label>
-            <input
-              type="text"
-              id="first_name"
-              name="first_name"
-              required
-            /><br />
-            <label for="last_name">Last Name:</label>
-            <input type="text" id="last_name" name="last_name" required /><br />
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required /><br />
-            <label for="phone">Phone:</label>
-            <input type="tel" id="phone" name="phone" required /><br />
-            <label for="check_in_date">Check-in Date:</label>
-            <input
-              type="date"
-              id="check_in_date"
-              name="check_in_date"
-              required
-            /><br />
-            <label for="check_out_date">Check-out Date:</label><br />
-            <input
-              type="date"
-              id="check_out_date"
-              name="check_out_date"
-              required
-            /><br />
-            <label for="room_number">Room Number:</label>
-            <input
-              type="text"
-              id="room_number"
-              name="room_number"
-              required
-            /><br />
-            <button type="submit">Submit</button>
-          </form>
-        </div>
       </main>
     </section>
 

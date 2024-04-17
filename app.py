@@ -4,7 +4,8 @@ from dotenv import load_dotenv
 import os
 from flask import jsonify
 from database import db
-from Models.room import room_blueprint, Room
+from Models.room import room_blueprint, create_room, Room
+from Models.billing import bill_blueprint, Billing
 import Blueprints
 from datetime import datetime
 
@@ -19,6 +20,7 @@ db.init_app(app)
 app.register_blueprint(Blueprints.Reservations.reservation_blueprint)
 app.register_blueprint(Blueprints.Admin.admin_blueprint)
 app.register_blueprint(room_blueprint)
+app.register_blueprint(bill_blueprint)
 
 
 @app.route('/')
@@ -45,15 +47,15 @@ if __name__ == '__main__':
     with app.app_context():
             db.create_all()
 
-            Room.create_room(101, 'Single', '50')
-            Room.create_room(102, 'Double', '70')
-            Room.create_room(103, 'Suite', '100')
-            Room.create_room(104, 'Deluxe', '120')
-            Room.create_room(105, 'Penthouse', '200')
-            Room.create_room(106, 'Penthouse', '200')
-            Room.create_room(107, 'Penthouse', '200')
-            Room.create_room(108, 'Penthouse', '200')
-            Room.create_room(109, 'Penthouse', '200')
-            Room.create_room(110, 'Penthouse', '200')
+            create_room(101, 'Single', '50')
+            create_room(102, 'Double', '70')
+            create_room(103, 'Suite', '100')
+            create_room(104, 'Deluxe', '120')
+            create_room(105, 'Penthouse', '200')
+            create_room(106, 'Penthouse', '200')
+            create_room(107, 'Penthouse', '200')
+            create_room(108, 'Penthouse', '200')
+            create_room(109, 'Penthouse', '200')
+            create_room(110, 'Penthouse', '200')
 
             app.run(debug=True)

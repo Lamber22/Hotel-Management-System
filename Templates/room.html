@@ -118,7 +118,7 @@
                   <th>Room Type</th>
                   <th>Price.</th>
                   <th>Status</th>
-                  <!--th>Available Date</th-->
+                  <th>Available Date</th>
                 </tr>
               </thead>
               <tbody>
@@ -130,7 +130,7 @@
                   <td>{{ room.room_price }}</td>
                   <td>{{ room.is_available }}</td>
                   <td id="status-{{ room.id }}"></td>
-                  <!--td>{{ room.available_date }}</td-->
+                  <td>{{ room.available_date }}</td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -192,25 +192,29 @@
         statusCell.textContent = status;
         statusCell.className = classList;
         statusCell.setAttribute('id', `status-${room.id}`);
+
+        const availableDateCell = row.insertCell();
+        availableDateCell.textContent = room.available_date;
         });
       });
     }
 
     function fetchRoomCounts() {
-        Promise.all([
-          fetch('/api/v1/rooms/count?is_available=true').then(res => res.json()),
-          fetch('/api/v1/rooms/count?is_available=false').then(res => res.json())
-        ])
-        .then(([occupied, vacant]) => {
-          document.querySelector('li.no-link:nth-child(2)').textContent = `Occupied: ${occupied}`;
-          document.querySelector('li.no-link:nth-child(3)').textContent = `Vacant: ${vacant}`;
-        });
-      }
+      Promise.all([
+        fetch('/api/v1/rooms/count?is_available=true').then(res => res.json()),
+        fetch('/api/v1/rooms/count?is_available=false').then(res => res.json())
+      ])
+      .then(([occupied, vacant]) => {
+        const occupiedElement = document.querySelector('li.no-link:nth-child(2)');
+        const vacantElement = document.querySelector('li.no-link:nth-child(3)');
+        occupiedElement.textContent = `Occupied: ${occupied}`;
+        vacantElement.textContent = `Vacant: ${vacant}`;
+      });
+    }
     fetchRooms();
     fetchRoomCounts()
     setInterval(fetchRooms, 5000);
     setInterval(fetchRoomCounts, 5000);
-
   </script>
 </body>
 </html>
