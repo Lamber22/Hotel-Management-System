@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Harmony Heights Hotel Management System</title>
+    <script
+      src="https://kit.fontawesome.com/d9f4f0f8c7.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <!-- Custom CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="index.css"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">Harmony Heights</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link text-light" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="#features">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="#contact">Contact</a>
+            </li>
+            <!-- Social media icons -->
+            <li class="nav-item">
+              <a class="nav-link text-light" href="#"
+                ><i class="fab fa-facebook"></i
+              ></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="https://wa.me/+231881574186"
+                ><i class="fab fa-whatsapp"></i
+              ></a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-light"
+                href="https://www.linkedin.com/in/lamber-j-kpukuyou/"
+                ><i class="fab fa-linkedin"></i
+              ></a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-light"
+                href="mailto:joekpukuyou5@gmail.com"
+                ><i class="fas fa-envelope"></i
+              ></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" style="padding-top: 70px">
+      <div class="container text-center">
+        <h1>Welcome to Harmony Heights</h1>
+        <p class="lead">Hotel Management System</p>
+        <a
+          href="{{ url_for('login.admin_login') }}"
+          class="btn btn-primary btn-lg"
+          >Start Managing</a
+        >
+      </div>
+    </section>
+
+    <section id="about" class="py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+            <h2>About</h2>
+            <p>
+              Our platform is tailored for hotel owners, offering efficient
+              management solutions. With our system, streamline your hotel
+              operations effortlessly.
+              <br />
+              <br />
+              The system is designed to help you manage your hotel operations
+              more effectively by providing easy access to key information and
+              functionalities that are crucial in running a hotel business. From
+              managing guest accounts to booking rooms, Harmony Heights has got
+              everything covered.
+            </p>
+          </div>
+          <div class="col-lg-6">
+            <img
+              class="img-fluid"
+              src="{{ url_for('static', filename='images/harmony dashboard.JPG') }}"
+              alt="Harmony Heights Dashboard"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="bg-light py-5">
+      <div class="container">
+        <h2 class="text-center mb-4">Features</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <h3>Room Management</h3>
+            <img
+              class="img-fluid rounded"
+              src="{{ url_for('static', filename='images/room-dashboard.JPG') }}"
+              alt="Room Dashboard"
+              style="width: 200%; height: 50%"
+            />
+
+            <p>Manage room bookings, availability, and pricing easily.</p>
+          </div>
+          <div class="col-md-4">
+            <h3>Guest Management</h3>
+            <img
+              class="img-fluid rounded"
+              src="{{ url_for('static', filename='images/resv-dashboard.JPG') }}"
+              alt="Reservation Dashboard"
+              style="width: 200%; height: 50%"
+            />
+            <p>Keep track of guest information, bookings.</p>
+          </div>
+          <div class="col-md-4">
+            <h3>Staff Management</h3>
+            <p>Coming soon.....</p>
+          </div>
+          <div class="col-md-4">
+            <h3>Reports and Others</h3>
+            <p>Coming soon.....</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+      <div class="container">
+        <h2 class="text-center mb-4">Contact Us</h2>
+        <div class="row">
+          <div class="col-md-6">
+            <form>
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  placeholder="Enter your name"
+                />
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  placeholder="Enter your email"
+                />
+              </div>
+              <div class="form-group">
+                <label for="message">Message</label>
+                <textarea
+                  class="form-control"
+                  id="message"
+                  rows="5"
+                  placeholder="Enter your message"
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+          <div class="col-md-6">
+            <!--p>
+              <br />
+              Developers name goes here
+            </--p -->
+            <!-- Embed Google Maps -->
+            <iframe
+              width="100%"
+              height="300"
+              frameborder="0"
+              scrolling="no"
+              marginheight="0"
+              marginwidth="0"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24764722.04888971!2d-17.979049592990577!3d8.206613306629244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM4KwNTMnMzIuMSJOIDcwwrAzMCcyMS4yIkU!5e0!3m2!1sen!2sus!4v1649791677294!5m2!1sen!2sus"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white text-center py-3">
+      <div class="container">
+        <p>&copy; 2024 Harmony Heights. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
