@@ -27,12 +27,17 @@ def admin_login():
             return render_template('admin_login.html', error='Invalid username or password')
     return render_template('admin_login.html')
 
-@admin_blueprint.route('/admin_logout')
-def admin_logout():
-    session.pop('admin_logged_in', None)
-    return redirect('/api/admin_login')
 
 @admin_blueprint.route('/admin_dashboard')
 @admin_login_required
 def admin_dashboard():
     return render_template('admin_dashboard.html')
+
+@admin_blueprint.route('/home')
+def home_page():
+    return render_template('index.html')
+
+@admin_blueprint.route('/admin_logout')
+def admin_logout():
+    session.pop('admin_logged_in', None)
+    return redirect('/api/home')

@@ -28,11 +28,6 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': "Not found"}), 404)
@@ -40,7 +35,7 @@ def not_found(error):
 @app.route('/logout')
 def logout():
     session.pop('admin_logged_in', None)
-    return redirect(url_for('admin.admin_login'))
+    return redirect(url_for('admin.home'))
 
 
 if __name__ == '__main__':
