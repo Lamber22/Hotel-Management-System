@@ -126,6 +126,7 @@
                   <th>Check-out Date</th>
                   <th>Room No.</th>
                   <th>Status</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -135,11 +136,39 @@
                   <td>{{ reservation.check_in_date.strftime('%m-%d-%Y') }}</td>
                   <td>{{ reservation.check_out_date.strftime('%m-%d-%Y') }}</td>
                   <td>{{ reservation.room_number }}</td>
+                  <td>
+                    <button onclick="showUpdateForm({{ reservation.id }})">Update</button>
+                    <button onclick="deleteReservation({{ reservation.id }})">Delete</button>
+                </td>
                 </tr>
                 {% endfor %}
               </tbody>
             </table>
           </div>
+
+        <div id="updateFormContainer" style="display:none;">
+        <form id="updateForm">
+            <h1>Update Reservation</h1>
+            <label for="update_id">Reservation ID:</label>
+            <input type="number" id="update_id" name="id" required readonly><br>
+            <label for="update_first_name">First Name:</label>
+            <input type="text" id="update_first_name" name="first_name"><br>
+            <label for="update_last_name">Last Name:</label>
+            <input type="text" id="update_last_name" name="last_name"><br>
+            <label for="update_email">Email:</label>
+            <input type="email" id="update_email" name="email"><br>
+            <label for="update_phone">Phone:</label>
+            <input type="tel" id="update_phone" name="phone"><br>
+            <label for="update_check_in_date">Check-in Date:</label>
+            <input type="date" id="update_check_in_date" name="check_in_date"><br>
+            <label for="update_check_out_date">Check-out Date:</label>
+            <input type="date" id="update_check_out_date" name="check_out_date"><br>
+            <label for="update_room_number">Room Number:</label>
+            <input type="text" id="update_room_number" name="room_number"><br>
+            <button type="button" onclick="updateReservation()">Update</button>
+            <button type="button" onclick="hideUpdateForm()">Cancel</button>
+        </form>
+    </div>
 
         <div class="add_guest">
           <form action="/api/v1/reservations" method="post">
@@ -230,5 +259,6 @@
   fetchReservations();
   setInterval(fetchReservations, 5000); // Update every 5 seconds
 </script>
+<script src="static\script.js"></script>
   </body>
 </html>

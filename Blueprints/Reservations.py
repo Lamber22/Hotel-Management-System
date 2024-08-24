@@ -1,13 +1,12 @@
 from datetime import datetime
-from flask import blueprints, request, redirect, jsonify, session, render_template
+from flask import Blueprint, request, jsonify, render_template
 from database import db
 from Models.room import Room
-from Models.utils import calculate_bill
 import json
 import requests
 import logging
 
-reservation_blueprint = blueprints.Blueprint('reservations', __name__, url_prefix='/api/v1/reservations')
+reservation_blueprint = Blueprint('reservations', __name__, url_prefix='/api/v1/reservations')
 
 
 class Reservation(db.Model):
@@ -77,10 +76,8 @@ def make_reservation():
         }
         response = requests.post(url, data=json.dumps(bill_data), headers=headers)
 
-        print(response.json())
         bill_amount = response.json().get('amount')  # Get amount from response
         new_billing = Billing(
-            id=None,
             amount=bill_amount
         )
 
@@ -92,15 +89,13 @@ def make_reservation():
             check_out_date=check_out_date,
             room_number=room_number,
             room_id=room.id,
-            billing=new_billing.id
+            billing=new_billing
         )
 
-        new_billing.guest_id = reservation.id
         db.session.add(reservation)
         db.session.add(new_billing)
         db.session.commit()
 
-        room = Reservation.query.filter_by(room_number=room_number).first().room
         room.is_available = False
         room.available_date = check_out_date
         db.session.commit()
@@ -125,6 +120,7 @@ def get_reservations_api():
         reservations_data = []
         for reservation in reservations:
             reservations_data.append({
+                "id": reservation.id,
                 "guest_name": reservation.guest_name,
                 "email": reservation.email,
                 "phone": reservation.phone,
@@ -135,23 +131,35 @@ def get_reservations_api():
         return jsonify(reservations_data)
 
     except Exception as e:
-        print(e)
         logging.error(f"Error occurred while fetching reservations: {str(e)}")
         return jsonify({"message": "An error occurred while processing your request"}), 500
 
-@reservation_blueprint.route('/<int:id>', methods=['DELETE'])
-def cancel_reservation(id):
+
+@reservation_blueprint.route('/api/update_reservations/<int:id>', methods=['PUT'])
+def update_reservation(id):
+    data = request.json
     reservation = Reservation.query.get(id)
     if not reservation:
         return jsonify({"message": "Reservation not found"}), 404
 
-    room = reservation.room
-    room.is_available = False
-    room.available_date = datetime.utcnow()
+    reservation.guest_name = data.get('guest_name', reservation.guest_name)
+    reservation.email = data.get('email', reservation.email)
+    reservation.phone = data.get('phone', reservation.phone)
+    reservation.check_in_date = datetime.strptime(data.get('checkin_date', reservation.check_in_date.strftime('%Y-%m-%d')), '%Y-%m-%d').date()
+    reservation.check_out_date = datetime.strptime(data.get('checkout_date', reservation.check_out_date.strftime('%Y-%m-%d')), '%Y-%m-%d').date()
+    reservation.room_number = data.get('room_number', reservation.room_number)
 
+    db.session.commit()
+    return jsonify({"message": "Reservation updated"}), 200
+
+@reservation_blueprint.route('/api/delete_reservations/<int:id>', methods=['DELETE'])
+def delete_reservation(id):
+    reservation = Reservation.query.get(id)
+    if not reservation:
+        return jsonify({"message": "Reservation not found"}), 404
     db.session.delete(reservation)
     db.session.commit()
-    return jsonify({"message": "Reservation cancelled successfully"}), 204
+    return jsonify({"message": "Reservation deleted"}), 200
 
 @reservation_blueprint.route('/check_in')
 def reservation_checkin():
@@ -160,7 +168,6 @@ def reservation_checkin():
         return render_template('check_in.html', reservations=reservations)
 
     except Exception as e:
-        print(e)
         logging.error(f"Error occurred while fetching reservations: {str(e)}")
         return jsonify({"message": "An error occurred while processing your request"}), 500
 
@@ -171,5 +178,3 @@ def reservation_checkout():
 @reservation_blueprint.route('view_reservation')
 def view_reservation():
     return render_template('view_reservation.html')
-
-

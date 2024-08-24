@@ -1,8 +1,7 @@
-from flask import Flask, render_template, url_for, request, redirect, make_response
+import os
+from flask import Flask, render_template, url_for, request, redirect, make_response, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
-import os
-from flask import jsonify
 from database import db
 from Models.room import room_blueprint, create_room, Room
 from Models.billing import bill_blueprint, Billing
